@@ -1,0 +1,7 @@
+.NavBar{
+    padding: 4vh (100vw/14) 4vh (100vw/14);
+    @include shadow_primary;
+}
+.NavBar-NavLink a{
+    margin-right: 50px;
+}

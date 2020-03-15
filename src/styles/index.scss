@@ -1,3 +1,16 @@
 
 @import './base/reset.scss';
+
+@import './utils/variables';
+@import './utils/mixins';
 @import './base/typography.scss';
+
+//Grid
+
+
+//Components
+@import './components/NavBar.scss';
+@import './components/Header.scss';
+@import './components/Layout.scss';
+@import './components/Sections.scss';
+@import './components/Spinner.scss';
