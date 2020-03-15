@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Row } from "antd";
 import axios from "axios";
-import { convertIdToStr } from "../../../shared/Methods";
+import { convertIdToStr, getDistance } from "../../../shared/Methods";
 
-import CloudProviders from './CloudProviders/CloudProviders'
+import CloudProviders from "./CloudProviders/CloudProviders";
 import Regions from "./Regions/Regions";
-import Spinner from '../../../components/Spinner/Spinner'
+import Spinner from "../../../components/Spinner/Spinner";
 
 interface Props {}
 
@@ -22,19 +22,23 @@ const Sections = (props: Props) => {
   const [cloudProviderId, setCloudProviderId] = useState(0);
   const [regionCategories, setRegionCategories] = useState<string[]>();
   const [selectedRegion, setSelectedRegion] = useState<string>("Europe");
-  const [cloudsByProvider, setCloudsByProvider] = useState<Cloud[]>();
+  const [cloudsByProvider, setCloudsByProvider] = useState<Cloud[]>([]);
   const [selectedCloud, setSelectedCloud] = useState<string>();
+  const [myLocation, setMyLocation] = useState()
+  const providerIdChange = (id: number) => {
+    setCloudProviderId(id);
+  };
 
-  const providerIdChange = (id:number) => {
-    setCloudProviderId(id)
-  }
+  const regionChange = (region: string) => {
+    setSelectedRegion(region);
+  };
 
-  const regionChange = (region:string) => {
-    setSelectedRegion(region)
-  }
-
-  const cloudChange = (cloudName:string) => {
-    setSelectedCloud(cloudName)
+  const cloudChange = (cloudName: string) => {
+    setSelectedCloud(cloudName);
+  };
+  // Get geolocation 
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition((location)=> setMyLocation(location.coords), err=> console.log(err))
   }
 
   // API call - Fetch all the available cloud platforms
@@ -60,7 +64,7 @@ const Sections = (props: Props) => {
     setCloudsByProvider(result);
   }, [clouds, cloudProviderId]);
 
-  //Get all the available regions
+  // Get all the available regions
   useEffect(() => {
     let regionCate: string[] = [];
     if (cloudsByProvider) {
@@ -74,28 +78,47 @@ const Sections = (props: Props) => {
     }
   }, [cloudsByProvider]);
 
-  const renderSections = () => {
-    if(regionCategories && cloudsByProvider){
-        return(
-            <Row className="Sections">
-                {/* Picking cloud provider section */}
-                <CloudProviders providerIdChange={providerIdChange} cloudProviderId={cloudProviderId}/>
-            
-                {/* Picking region section */}
-                <Regions regionCategories={regionCategories} regionChange={regionChange} cloudsByProvider={cloudsByProvider} selectedRegion={selectedRegion} cloudChange={cloudChange} selectedCloud={selectedCloud}/>
-            </Row>
-        )
-    }else{
-        return <Spinner/>
+  // Find nearest server
+  useEffect(()=>{
+    let distances:number[] = []
+    if(cloudsByProvider && myLocation){
+      cloudsByProvider.forEach(item => {
+        distances.push(getDistance(myLocation.latitude, myLocation.longitude, item.geo_latitude, item.geo_longitude,"K"))
+      })
+      const index = distances.indexOf(Math.min(...distances))
+      setSelectedRegion(cloudsByProvider[index].cloud_description.split(',')[0])
+      setSelectedCloud(cloudsByProvider[index].cloud_name)
     }
-  }
-  
+  }, [cloudsByProvider,myLocation])
 
-  return (
-      <React.Fragment>
-          {renderSections()}
-      </React.Fragment>
-  );
+  // Render sections component
+  const renderSections = () => {
+    if (regionCategories && cloudsByProvider) {
+      return (
+        <Row className="Sections">
+          {/* Picking cloud provider section */}
+          <CloudProviders
+            providerIdChange={providerIdChange}
+            cloudProviderId={cloudProviderId}
+          />
+
+          {/* Picking region section */}
+          <Regions
+            regionCategories={regionCategories}
+            regionChange={regionChange}
+            cloudsByProvider={cloudsByProvider}
+            selectedRegion={selectedRegion}
+            cloudChange={cloudChange}
+            selectedCloud={selectedCloud}
+          />
+        </Row>
+      );
+    } else {
+      return <Spinner />;
+    }
+  };
+
+  return <React.Fragment>{renderSections()}</React.Fragment>;
 };
 
 export default Sections;

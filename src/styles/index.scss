@@ -4,13 +4,14 @@
 @import './utils/variables';
 @import './utils/mixins';
 @import './base/typography.scss';
+@import './base/theme.scss';
 
-//Grid
 
 
 //Components
 @import './components/NavBar.scss';
-@import './components/Header.scss';
 @import './components/Layout.scss';
-@import './components/Sections.scss';
 @import './components/Spinner.scss';
+
+//Pages
+@import './pages/Landing.scss';

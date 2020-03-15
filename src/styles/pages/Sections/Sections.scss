@@ -33,6 +33,7 @@
     width: 11.5em;
     height: 9.5em;
     transition: transform .35s;
+    text-align: center;
     &:hover{
         transform: scale(1.05);
     }

@@ -4,10 +4,10 @@ import Sections from './Sections/Sections'
 
 const Landing = () => {
     return (
-        <React.Fragment>
+        <div className="Landing">
             <Header/>
             <Sections/>
-        </React.Fragment>
+        </div>
     )
 }
 

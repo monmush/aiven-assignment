@@ -8,11 +8,6 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Landing from './pages/Landing/Landing'
 
 function App() {
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition((location)=>{
-      console.log(location)
-    }, err => console.log(err))
-  }
   return(
     <Router>
       <div className="App">
