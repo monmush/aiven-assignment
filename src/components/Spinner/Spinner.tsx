@@ -3,11 +3,13 @@ import React from "react"
 
 const Spinner = () => {
   return (
-    <div className="Spinner">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div className="Spinner-Container">
+      <div className="Spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   )
 }

@@ -16,11 +16,12 @@ interface Props {
     cloudsByProvider: Cloud[],
     selectedRegion?: string, 
     selectedCloud?: string,
+    nearestCloud: string
     cloudChange: (cloudName: string) => void,
     regionChange: (region:string) => void
 }
 
-const Regions:React.FC<Props>= ({regionCategories, regionChange, cloudsByProvider, selectedRegion, cloudChange,selectedCloud}) => {
+const Regions:React.FC<Props>= ({regionCategories, regionChange, cloudsByProvider, selectedRegion, cloudChange,selectedCloud, nearestCloud}) => {
     //Render the regions navigation bar
   const renderRegionsNav =
   regionCategories &&
@@ -50,12 +51,15 @@ const renderCloudsByRegion =
         item.cloud_name === selectedCloud
           ? "Section-Region-Cloud active"
           : "Section-Region-Cloud";
+
+      const displayClass = item.cloud_name === nearestCloud ? " d-block" : " d-none"
       return (
         <Col
           lg={10}
           className={customClass}
           onClick={() => cloudChange(item.cloud_name)}
-        >
+        > 
+          <small className={"recommended" + displayClass}>Recommended - Shortest distance</small>
           <Row justify="start" align="top">
             <Col>
               <img src={Database} alt="db-icon" />

@@ -15,16 +15,19 @@ interface Cloud {
   geo_latitude: number;
   geo_longitude: number;
   geo_region: string;
+  distance?: number
 }
 
 const Sections = (props: Props) => {
-  const [clouds, setClouds] = useState<Cloud[]>();
+  const [clouds, setClouds] = useState<Cloud[]>([]);
   const [cloudProviderId, setCloudProviderId] = useState(0);
-  const [regionCategories, setRegionCategories] = useState<string[]>();
+  const [regionCategories, setRegionCategories] = useState<string[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<string>("Europe");
   const [cloudsByProvider, setCloudsByProvider] = useState<Cloud[]>([]);
   const [selectedCloud, setSelectedCloud] = useState<string>();
   const [myLocation, setMyLocation] = useState()
+  const [nearestCloud, setNearestCloud] = useState()
+  
   const providerIdChange = (id: number) => {
     setCloudProviderId(id);
   };
@@ -36,6 +39,7 @@ const Sections = (props: Props) => {
   const cloudChange = (cloudName: string) => {
     setSelectedCloud(cloudName);
   };
+
   // Get geolocation 
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition((location)=> setMyLocation(location.coords), err=> console.log(err))
@@ -51,18 +55,24 @@ const Sections = (props: Props) => {
       .catch(err => console.log(err));
   }, []);
 
-  // Get all clouds on selected Cloud Provider
+  // Get all clouds on selected Cloud Provider and sort it
+  // in the distance ascending order
   useEffect(() => {
-    const result: Cloud[] = [];
-    if (clouds) {
+    let result: Cloud[] = [];
+    if (clouds.length > 1 && myLocation !== undefined) {
       clouds.map(item => {
         if (item.cloud_name.indexOf(convertIdToStr(cloudProviderId)) > -1) {
-          result.push(item);
+          const distance = getDistance(myLocation.latitude, myLocation.longitude, item.geo_latitude, item.geo_longitude,"K")
+          result = [...result, {...item, distance: distance}];
         }
       });
+      setCloudsByProvider(result.sort((a,b)=>a.distance!-b.distance!));
+      setSelectedRegion(result[0].cloud_description.split(',')[0])
+      setSelectedCloud(result[0].cloud_name)
+      setNearestCloud(result[0].cloud_name)
     }
-    setCloudsByProvider(result);
-  }, [clouds, cloudProviderId]);
+    
+  }, [clouds, cloudProviderId, myLocation]);
 
   // Get all the available regions
   useEffect(() => {
@@ -78,22 +88,9 @@ const Sections = (props: Props) => {
     }
   }, [cloudsByProvider]);
 
-  // Find nearest server
-  useEffect(()=>{
-    let distances:number[] = []
-    if(cloudsByProvider && myLocation){
-      cloudsByProvider.forEach(item => {
-        distances.push(getDistance(myLocation.latitude, myLocation.longitude, item.geo_latitude, item.geo_longitude,"K"))
-      })
-      const index = distances.indexOf(Math.min(...distances))
-      setSelectedRegion(cloudsByProvider[index].cloud_description.split(',')[0])
-      setSelectedCloud(cloudsByProvider[index].cloud_name)
-    }
-  }, [cloudsByProvider,myLocation])
-
   // Render sections component
   const renderSections = () => {
-    if (regionCategories && cloudsByProvider) {
+    if (regionCategories.length > 0 && cloudsByProvider.length > 0) {
       return (
         <Row className="Sections">
           {/* Picking cloud provider section */}
@@ -110,11 +107,12 @@ const Sections = (props: Props) => {
             selectedRegion={selectedRegion}
             cloudChange={cloudChange}
             selectedCloud={selectedCloud}
+            nearestCloud={nearestCloud}
           />
         </Row>
       );
     } else {
-      return <Spinner />;
+      return <Spinner/>;
     }
   };
 

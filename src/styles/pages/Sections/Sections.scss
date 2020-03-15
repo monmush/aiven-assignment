@@ -53,6 +53,11 @@
 .active-rg{
     border-bottom: 3px solid $primary-color;
 }
+.recommended{
+    position: absolute;
+    top: -16px;
+    color: $primary-color;
+}
 
 .Section-Region-NavBar-Item{
     cursor: default;
