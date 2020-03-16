@@ -1,24 +1,23 @@
-import React from 'react'
-import {Row, Col} from 'antd'
+import React from "react";
+import { Row, Col } from "antd";
+import {Link} from 'react-router-dom'
 
-interface Props {
-    
-}
+const NavBar = () => {
+  return (
+    <Row justify="space-between" align="middle" className="NavBar">
+      <Col lg={4}>
+        <Link to="/" className="logo">
+          WEB CONSOLE
+        </Link>
+      </Col>
+      <Col lg={10} className="NavBar-NavLink">
+        <Link to="/">Overview</Link>
+        <Link to="/">Docs</Link>
+        <Link to="/">Tutorial</Link>
+        <Link to="/">Sign out</Link>
+      </Col>
+    </Row>
+  );
+};
 
-const NavBar = (props: Props) => {
-    return (
-        <Row justify='space-between' align='middle' className="NavBar">
-            <Col lg={4}>
-                <a href="/" className="logo">WEB CONSOLE</a>
-            </Col>
-            <Col lg={10} className="NavBar-NavLink">
-                <a href="/">Overview</a>
-                <a href="/">Docs</a>
-                <a href="/">Tutorial</a>
-                <a href="/">Sign out</a>
-            </Col>
-        </Row>
-    )
-}
-
-export default React.memo(NavBar)
+export default React.memo(NavBar);

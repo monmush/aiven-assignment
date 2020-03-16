@@ -12,7 +12,10 @@ interface Props {
   cloudProviderId: number;
 }
 
-const CloudProviders: React.FC<Props> = ({cloudProviderId,providerIdChange}) => {
+const CloudProviders: React.FC<Props> = ({
+  cloudProviderId,
+  providerIdChange
+}) => {
   const cloudProviderLogos = [AWS, Google, Azure, DigitalOcean, Upcloud];
 
   //Render all the available cloud providers
@@ -22,23 +25,22 @@ const CloudProviders: React.FC<Props> = ({cloudProviderId,providerIdChange}) => 
         ? "Sections-CloudSelect active"
         : "Sections-CloudSelect";
     return (
-        <Col
-            span={4}
-            className={customClass}
-            key={index}
-            onClick={() => providerIdChange(index)}>
-            <img src={cp} alt={cp + "logo"} />
-        </Col>
+      <Col
+        span={4}
+        className={customClass}
+        key={index}
+        onClick={() => providerIdChange(index)}
+      >
+        <img src={cp} alt={cp + "logo"} />
+      </Col>
     );
   });
 
-  return(
-    <Layout
-    title={"Pick a cloud provider"}
-    description={"Contrary to popular"}>
+  return (
+    <Layout title={"Pick a cloud provider"} description={"Contrary to popular"}>
       {renderCloudProviders}
     </Layout>
-  )
+  );
 };
 
 export default CloudProviders;

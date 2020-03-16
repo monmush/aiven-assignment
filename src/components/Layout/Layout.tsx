@@ -1,12 +1,8 @@
-import React,{FunctionComponent} from 'react'
-import {Row} from 'antd'
+import React, { FunctionComponent } from "react";
+import { Row } from "antd";
 
-const Layout:FunctionComponent= ({children}) => {
-    return (
-       <Row className="Layout">
-        {children}
-       </Row>
-    )
-}
+const Layout: FunctionComponent = ({ children }) => {
+  return <Row className="Layout">{children}</Row>;
+};
 
-export default Layout
+export default Layout;

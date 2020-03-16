@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row } from "antd";
+import { Row, Col, message } from "antd";
 import axios from "axios";
 import { convertIdToStr, getDistance } from "../../../shared/Methods";
 
@@ -15,7 +15,7 @@ interface Cloud {
   geo_latitude: number;
   geo_longitude: number;
   geo_region: string;
-  distance?: number
+  distance?: number;
 }
 
 const Sections = (props: Props) => {
@@ -25,9 +25,9 @@ const Sections = (props: Props) => {
   const [selectedRegion, setSelectedRegion] = useState<string>("Europe");
   const [cloudsByProvider, setCloudsByProvider] = useState<Cloud[]>([]);
   const [selectedCloud, setSelectedCloud] = useState<string>();
-  const [myLocation, setMyLocation] = useState()
-  const [nearestCloud, setNearestCloud] = useState()
-  
+  const [myLocation, setMyLocation] = useState();
+  const [nearestCloud, setNearestCloud] = useState();
+
   const providerIdChange = (id: number) => {
     setCloudProviderId(id);
   };
@@ -40,9 +40,12 @@ const Sections = (props: Props) => {
     setSelectedCloud(cloudName);
   };
 
-  // Get geolocation 
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition((location)=> setMyLocation(location.coords), err=> console.log(err))
+  // Get geolocation
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      location => setMyLocation(location.coords),
+      err => console.log(err)
+    );
   }
 
   // API call - Fetch all the available cloud platforms
@@ -62,16 +65,21 @@ const Sections = (props: Props) => {
     if (clouds.length > 1 && myLocation !== undefined) {
       clouds.map(item => {
         if (item.cloud_name.indexOf(convertIdToStr(cloudProviderId)) > -1) {
-          const distance = getDistance(myLocation.latitude, myLocation.longitude, item.geo_latitude, item.geo_longitude,"K")
-          result = [...result, {...item, distance: distance}];
+          const distance = getDistance(
+            myLocation.latitude,
+            myLocation.longitude,
+            item.geo_latitude,
+            item.geo_longitude,
+            "K"
+          );
+          result = [...result, { ...item, distance: distance }];
         }
       });
-      setCloudsByProvider(result.sort((a,b)=>a.distance!-b.distance!));
-      setSelectedRegion(result[0].cloud_description.split(',')[0])
-      setSelectedCloud(result[0].cloud_name)
-      setNearestCloud(result[0].cloud_name)
+      setCloudsByProvider(result.sort((a, b) => a.distance! - b.distance!));
+      setSelectedRegion(result[0].cloud_description.split(",")[0]);
+      setSelectedCloud(result[0].cloud_name);
+      setNearestCloud(result[0].cloud_name);
     }
-    
   }, [clouds, cloudProviderId, myLocation]);
 
   // Get all the available regions
@@ -87,6 +95,14 @@ const Sections = (props: Props) => {
       setRegionCategories(regionCate);
     }
   }, [cloudsByProvider]);
+
+  //Submit handler
+  const submitHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    message.success("Successfully created " + selectedCloud);
+  };
 
   // Render sections component
   const renderSections = () => {
@@ -109,10 +125,17 @@ const Sections = (props: Props) => {
             selectedCloud={selectedCloud}
             nearestCloud={nearestCloud}
           />
+
+          {/* Submit button */}
+          <Col offset={18} lg={6}>
+            <button className="Button__Primary" onClick={submitHandler}>
+              Create your cluster
+            </button>
+          </Col>
         </Row>
       );
     } else {
-      return <Spinner/>;
+      return <Spinner />;
     }
   };
 

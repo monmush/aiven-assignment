@@ -10,3 +10,21 @@
 .d-none{
     display:none;
 }
+.Button-Link{
+    display: block;
+    border: 2px solid $primary-color;   
+    border-radius: 15px;
+    padding: .8em;
+    color: $primary-color;
+    text-align: center;
+}
+.Button__Primary{
+    width: 100%;
+    background: $primary-color;
+    border: none;
+    border-radius: 15px;
+    padding: .8em;
+    color: #ffff;
+    text-align: center;
+    text-transform: uppercase;
+}

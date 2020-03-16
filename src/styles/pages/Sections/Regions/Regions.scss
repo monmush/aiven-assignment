@@ -1,0 +1,37 @@
+.Section-Region-NavBar-Item{
+    cursor: default;
+    font-weight: bold;
+    transition: transform .35s;
+    margin-right: 2.5em;
+    padding-bottom: .5em;
+    &:hover{
+        transform: scale(1.05);
+    }
+}
+#Section-Region{
+    min-height: 375px;
+}
+.Section-Region-NavBar{
+    width: 90%;
+    border-bottom: 1px solid $border;
+}
+.Section-Region-Cloud{
+    text-align: left;
+    border: 2px solid $border;
+    border-radius: 15px;
+    padding: .6em;
+    margin-left: 3.125em;
+    margin-bottom: 1em;
+    p{
+        font-size: .9em;
+    }
+}
+.Section-Region-CloudsContainer{
+    width: 100%;
+    margin-top: 1.75em;
+}
+.recommended{
+    position: absolute;
+    top: -16px;
+    color: $primary-color;
+}

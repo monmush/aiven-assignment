@@ -2,19 +2,14 @@ export const convertIdToStr = (id: number) => {
   switch (id) {
     case 0:
       return "aws";
-      break;
     case 1:
       return "google";
-      break;
     case 2:
       return "azure";
-      break;
     case 3:
       return "do";
-      break;
     case 4:
       return "upcloud";
-      break;
     default:
       return "aws";
   }
@@ -26,7 +21,7 @@ export const convertIdToStr = (id: number) => {
 // Link to the source code: https://www.geodatasource.com/developers/javascript
 
 export const getDistance = (lat1:number, lon1:number, lat2:number, lon2:number, unit:string) => {
-	if ((lat1 == lat2) && (lon1 == lon2)) {
+	if ((lat1 === lat2) && (lon1 === lon2)) {
 		return 0;
 	}
 	else {
@@ -41,8 +36,8 @@ export const getDistance = (lat1:number, lon1:number, lat2:number, lon2:number, 
 		dist = Math.acos(dist);
 		dist = dist * 180/Math.PI;
 		dist = dist * 60 * 1.1515;
-		if (unit=="K") { dist = dist * 1.609344 }
-		if (unit=="N") { dist = dist * 0.8684 }
+		if (unit==="K") { dist = dist * 1.609344 }
+		if (unit==="N") { dist = dist * 0.8684 }
 		return dist;
 	}
 }
