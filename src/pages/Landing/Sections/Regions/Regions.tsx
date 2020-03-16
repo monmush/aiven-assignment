@@ -30,7 +30,6 @@ const Regions: React.FC<Props> = ({
   selectedCloud,
   nearestCloud
 }) => {
-
   //Render the regions navigation bar
   const renderRegionsNav =
     regionCategories &&
