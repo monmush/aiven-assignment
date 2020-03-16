@@ -17,14 +17,24 @@
     padding: .8em;
     color: $primary-color;
     text-align: center;
+    &:hover{
+        background: $primary-color;
+    border: none;
+    color: #ffff;
+    }
 }
 .Button__Primary{
     width: 100%;
-    background: $primary-color;
-    border: none;
     border-radius: 15px;
     padding: .8em;
+    background: $primary-color;
+    border: none;
     color: #ffff;
     text-align: center;
     text-transform: uppercase;
+    &:hover{
+        background: #ffff;
+        border: 2px solid $primary-color;
+        color: $primary-color;
+    }
 }

@@ -40,13 +40,17 @@ const Sections = (props: Props) => {
     setSelectedCloud(cloudName);
   };
 
+  console.log('render');
+
   // Get geolocation
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      location => setMyLocation(location.coords),
-      err => console.log(err)
-    );
-  }
+  useEffect(()=>{
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        location => setMyLocation(location.coords),
+        err => console.log(err)
+      );
+    }
+  },[])
 
   // API call - Fetch all the available cloud platforms
   useEffect(() => {
@@ -106,7 +110,7 @@ const Sections = (props: Props) => {
 
   // Render sections component
   const renderSections = () => {
-    if (regionCategories.length > 0 && cloudsByProvider.length > 0) {
+    if (myLocation) {
       return (
         <Row className="Sections">
           {/* Picking cloud provider section */}

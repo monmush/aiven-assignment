@@ -1,12 +1,9 @@
 .Section-Region-NavBar-Item{
     cursor: default;
     font-weight: bold;
-    transition: transform .35s;
     margin-right: 2.5em;
     padding-bottom: .5em;
-    &:hover{
-        transform: scale(1.05);
-    }
+    @include scaleAnimation;
 }
 #Section-Region{
     min-height: 375px;
@@ -22,6 +19,7 @@
     padding: .6em;
     margin-left: 3.125em;
     margin-bottom: 1em;
+    @include scaleAnimation;
     p{
         font-size: .9em;
     }
