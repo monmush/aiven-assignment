@@ -73,10 +73,10 @@ const Regions: React.FC<Props> = ({
               </small>
 
               <Row justify="start" align="top">
-                <Col>
+                <Col lg={5} xl={4}>
                   <img src={Database} alt="db-icon" />
                 </Col>
-                <Col>
+                <Col span='auto'>
                   <p>{item.cloud_name}</p>
                   <small>{item.cloud_description.split("-")[0]}</small>
                 </Col>
